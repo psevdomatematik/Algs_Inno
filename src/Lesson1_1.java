@@ -11,10 +11,64 @@ public class Lesson1_1 {
         Edge edgeDE = new Edge(2500, 1, "D", "E");
         Edge edgeFE = new Edge(300, 85, "F", "E");
 
+        // через массив
         Edge []arrayOfEdges = {edgeAB, edgeAC, edgeAD, edgeBF, edgeCE, edgeCF, edgeDE, edgeFE};
 
         System.out.println(arrayOfEdges[5]);
         System.out.println(arrayOfEdges[2]);
+
+        // через узлы
+        EdgeNode edgeNodeAB = new EdgeNode(edgeAB);
+        EdgeNode edgeNodeAC = new EdgeNode(edgeAC);
+        EdgeNode edgeNodeAD = new EdgeNode(edgeAD);
+        EdgeNode edgeNodeBF = new EdgeNode(edgeBF);
+        EdgeNode edgeNodeCE = new EdgeNode(edgeCE);
+        EdgeNode edgeNodeCF = new EdgeNode(edgeCF);
+        EdgeNode edgeNodeDE = new EdgeNode(edgeDE);
+        EdgeNode edgeNodeEF = new EdgeNode(edgeFE);
+
+        edgeNodeAB.adjacentEdgeOne = edgeNodeAC;
+        edgeNodeAB.adjacentEdgeTwo = edgeNodeAD;
+        edgeNodeAB.adjacentEdgeThree = edgeNodeBF;
+        edgeNodeAB.adjacentEdgeFour = null;
+
+        edgeNodeAC.adjacentEdgeOne = edgeNodeAB;
+        edgeNodeAC.adjacentEdgeTwo = edgeNodeAD;
+        edgeNodeAC.adjacentEdgeThree = edgeNodeCE;
+        edgeNodeAC.adjacentEdgeFour = edgeNodeCF;
+
+        edgeNodeAD.adjacentEdgeOne = edgeNodeAB;
+        edgeNodeAD.adjacentEdgeTwo = edgeNodeAC;
+        edgeNodeAD.adjacentEdgeThree = edgeNodeDE;
+        edgeNodeAD.adjacentEdgeFour = null;
+
+        edgeNodeBF.adjacentEdgeOne = edgeNodeAB;
+        edgeNodeBF.adjacentEdgeTwo = edgeNodeCF;
+        edgeNodeBF.adjacentEdgeThree = edgeNodeEF;
+        edgeNodeBF.adjacentEdgeFour = null;
+
+        edgeNodeCE.adjacentEdgeOne = edgeNodeAC;
+        edgeNodeCE.adjacentEdgeTwo = edgeNodeDE;
+        edgeNodeCE.adjacentEdgeThree = edgeNodeEF;
+        edgeNodeCE.adjacentEdgeFour = edgeNodeCF;
+
+        edgeNodeCF.adjacentEdgeOne = edgeNodeAC;
+        edgeNodeCF.adjacentEdgeTwo = edgeNodeCE;
+        edgeNodeCF.adjacentEdgeThree = edgeNodeBF;
+        edgeNodeCF.adjacentEdgeFour = edgeNodeEF;
+
+        edgeNodeDE.adjacentEdgeOne = edgeNodeAD;
+        edgeNodeDE.adjacentEdgeTwo = edgeNodeCE;
+        edgeNodeDE.adjacentEdgeThree = edgeNodeEF;
+        edgeNodeDE.adjacentEdgeFour = null;
+
+        edgeNodeEF.adjacentEdgeOne = edgeNodeBF;
+        edgeNodeEF.adjacentEdgeTwo = edgeNodeCF;
+        edgeNodeEF.adjacentEdgeThree = edgeNodeCE;
+        edgeNodeEF.adjacentEdgeFour = edgeNodeDE;
+
+        System.out.println(edgeNodeCE);
+        System.out.println(edgeNodeAD);
     }    
 }
 
@@ -39,5 +93,31 @@ class Edge {
                 ", start='" + start + '\'' +
                 ", end='" + end + '\'' +
                 '}';
+    }
+}
+
+class EdgeNode {
+    Edge edge;
+    EdgeNode adjacentEdgeOne;
+    EdgeNode adjacentEdgeTwo;
+    EdgeNode adjacentEdgeThree;
+    EdgeNode adjacentEdgeFour;
+
+    public EdgeNode(Edge edge) {
+        this.edge = edge;
+    }
+
+    @Override
+    public String toString() {
+
+
+        String s = "EdgeNode{" +
+                "edge=" + edge +
+                ",\n adjacentEdgeOne=" + ((adjacentEdgeOne == null) ? "null" : adjacentEdgeOne.edge.toString()) +
+                ",\n adjacentEdgeTwo=" + ((adjacentEdgeTwo == null) ? "null" : adjacentEdgeTwo.edge.toString()) +
+                ",\n adjacentEdgeThree=" + ((adjacentEdgeThree == null) ? "null" : adjacentEdgeThree.edge.toString()) +
+                ",\n adjacentEdgeFour=" + ((adjacentEdgeFour == null) ? "null" : adjacentEdgeFour.edge.toString()) +
+                "}";
+        return s;
     }
 }
