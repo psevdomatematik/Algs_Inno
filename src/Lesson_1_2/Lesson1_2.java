@@ -2,118 +2,94 @@ package Lesson_1_2;
 
 public class Lesson1_2 {
     public static void main(String[] args) {
-        Edge edgeAB = new Edge(1500, 90, "A", "B");
-        Edge edgeAC = new Edge(2000, 10, "A", "C");
-        Edge edgeAD = new Edge(1000, 50, "A", "D");
-        Edge edgeBF = new Edge(1500, 60, "B", "F");
-        Edge edgeCE = new Edge(900, 5, "C", "E");
-        Edge edgeCF = new Edge(500, 20, "C", "F");
-        Edge edgeDE = new Edge(2500, 1, "D", "E");
-        Edge edgeFE = new Edge(300, 85, "F", "E");
+        Vertex vertexA = new Vertex("A");
+        Vertex vertexB = new Vertex("B");
+        Vertex vertexC = new Vertex("C");
+        Vertex vertexD = new Vertex("D");
+        Vertex vertexE = new Vertex("E");
+        Vertex vertexF = new Vertex("F");
 
-        EdgeNode edgeNodeAB = new EdgeNode(edgeAB);
-        EdgeNode edgeNodeAC = new EdgeNode(edgeAC);
-        EdgeNode edgeNodeAD = new EdgeNode(edgeAD);
-        EdgeNode edgeNodeBF = new EdgeNode(edgeBF);
-        EdgeNode edgeNodeCE = new EdgeNode(edgeCE);
-        EdgeNode edgeNodeCF = new EdgeNode(edgeCF);
-        EdgeNode edgeNodeDE = new EdgeNode(edgeDE);
-        EdgeNode edgeNodeEF = new EdgeNode(edgeFE);
-
-        edgeNodeAB.adjacentNodes = new EdgeNode[] {
-                edgeNodeAC,
-                edgeNodeAD,
-                edgeNodeBF
+        vertexA.edges = new Edge[] {
+                new Edge(vertexB, 1500, 90),
+                new Edge(vertexC, 2000, 10),
+                new Edge(vertexD, 1000, 50)
         };
 
-        edgeNodeAC.adjacentNodes = new EdgeNode[] {
-                edgeNodeAB,
-                edgeNodeAD,
-                edgeNodeCE,
-                edgeNodeCF
+        vertexB.edges = new Edge[] {
+                new Edge(vertexA, 1500, 90),
+                new Edge(vertexF, 1500, 60),
         };
 
-        edgeNodeAD.adjacentNodes = new EdgeNode[] {
-                edgeNodeAB,
-                edgeNodeAC,
-                edgeNodeDE
+        vertexC.edges = new Edge[] {
+                new Edge(vertexA, 2000, 10),
+                new Edge(vertexE, 900, 5),
+                new Edge(vertexF, 500, 20),
         };
 
-        edgeNodeBF.adjacentNodes = new EdgeNode[] {
-                edgeNodeAB,
-                edgeNodeCF,
-                edgeNodeEF
+        vertexD.edges = new Edge[] {
+                new Edge(vertexA, 1000, 50),
+                new Edge(vertexE, 2500, 1),
         };
 
-        edgeNodeCE.adjacentNodes = new EdgeNode[] {
-                edgeNodeAC,
-                edgeNodeDE,
-                edgeNodeEF,
-                edgeNodeCF
+        vertexE.edges = new Edge[] {
+                new Edge(vertexC, 900, 5),
+                new Edge(vertexD, 2500, 1),
+                new Edge(vertexF, 300, 85),
         };
 
-        edgeNodeCF.adjacentNodes = new EdgeNode[] {
-                edgeNodeAC,
-                edgeNodeCE,
-                edgeNodeBF,
-                edgeNodeEF
+        vertexF.edges = new Edge[] {
+                new Edge(vertexB, 1500, 60),
+                new Edge(vertexC, 500, 20),
+                new Edge(vertexE, 300, 85),
         };
 
-        edgeNodeDE.adjacentNodes = new EdgeNode[] {
-                edgeNodeAD,
-                edgeNodeCE,
-                edgeNodeEF
-        };
+        Vertex startVertex = vertexA;
+        startVertex = startVertex.edges[0].vertex; // вершина B
+        startVertex = startVertex.edges[1].vertex; // вершина F
+        startVertex = startVertex.edges[2].vertex; // вершина E
 
-        edgeNodeEF.adjacentNodes = new EdgeNode[] {
-                edgeNodeBF,
-                edgeNodeCF,
-                edgeNodeCE,
-                edgeNodeDE
-        };
+        System.out.println(startVertex);
 
-        System.out.println(edgeNodeAB);
-        System.out.println(edgeNodeAB.adjacentNodes[2].adjacentNodes[1].adjacentNodes[0].adjacentNodes[0]);
+        System.out.println("Пропускная способность от E до D " + startVertex.edges[1].throughput);
+        System.out.println("Процент потерянных пакетов от E до F " + startVertex.edges[2].loss);
+
     }
 }
 
 
-class Edge {
-    int size;
-    int loss;
-    String start;
-    String end;
+class Vertex {
+    String name;
+    Edge[] edges;
 
-    public Edge(int size, int loss, String start, String end) {
-        this.size = size;
+    public Vertex(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Vertex{" +
+                "name='" + name + '\'' +
+                '}';
+    }
+}
+
+class Edge {
+    Vertex vertex;
+    int throughput;
+    int loss;
+
+    public Edge(Vertex vertex, int throughput, int loss) {
+        this.vertex = vertex;
+        this.throughput = throughput;
         this.loss = loss;
-        this.start = start;
-        this.end = end;
     }
 
     @Override
     public String toString() {
         return "Edge{" +
-                "size=" + size +
+                "vertex=" + vertex +
+                ", throughput=" + throughput +
                 ", loss=" + loss +
-                ", start='" + start + '\'' +
-                ", end='" + end + '\'' +
                 '}';
-    }
-}
-
-class EdgeNode {
-    Edge edge;
-    EdgeNode[] adjacentNodes;
-
-    @Override
-    public String toString() {
-        return "EdgeNode{" +
-                "edge=" + edge +
-                '}';
-    }
-
-    public EdgeNode(Edge edge) {
-        this.edge = edge;
     }
 }
